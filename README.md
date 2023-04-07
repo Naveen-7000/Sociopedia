@@ -2,9 +2,9 @@
 
 This is frontend of Sociopedia project which is a assignment from **searchingYard**.
 
-**Note** : You have to create .env file in root of project and then add **BASE_URL** constant and place the **Sociopedia - Backend** url eg. localhost:3000.
+#**Note** : You have to create .env file in root of project and then add **BASE_URL** constant and place the **Sociopedia - Backend** url eg. localhost:3000.
 
-**Above is mandatory **
+                                                              **Above is mandatory **
 
 #Prerequisites
 Before you proceed, you need to ensure that you have the following installed:
