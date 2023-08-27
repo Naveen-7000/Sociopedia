@@ -6,11 +6,12 @@ import { setFriends } from "state";
 import FlexBetween from "./FlexBetween";
 import UserImage from "./UserImage";
 import { BASE_URL } from "db";
+import { useEffect, useState } from "react";
 
-const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
-  const dispatch = useDispatch();
+const UserCard = ({ userId }) => {
+    const [user,setUser] = useState(null);
+    const [loading,setLoading] = useState(true);
   const navigate = useNavigate();
-  const { _id } = useSelector((state) => state.user);
   const token = useSelector((state) => state.token);
 
   const { palette } = useTheme();
@@ -19,30 +20,36 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
   const main = palette.neutral.main;
   const medium = palette.neutral.medium;
 
-  // const isFriend = friends && friends?.find((friend) => friend._id === friendId);
-
-  const patchFriend = async () => {
+  const getUser = async () => {
     const response = await fetch(
-      `${BASE_URL}users/${_id}/${friendId}`,
+      `${BASE_URL}users/${userId}`,
       {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
       }
     );
     const data = await response.json();
-    dispatch(setFriends({ friends: data }));
+    setUser(data);
+    setLoading(false);
   };
 
+  useEffect(()=>{
+    getUser();
+  },[userId])
+  console.log(user,"comments");
   return (
     <FlexBetween>
-      <FlexBetween gap="1rem">
-        <UserImage image={userPicturePath} size="55px" />
+        {
+            loading ? (
+                <Box>
+                    <Typography>Loading...</Typography>
+                </Box>
+            ) : (
+<FlexBetween gap="1rem" padding="10px">
+        <UserImage image={user?.picturePath} size="35px" />
         <Box
           onClick={() => {
-            navigate(`/profile/${friendId}`);
+            navigate(`/profile/${user._id}`);
             navigate(0);
           }}
         >
@@ -57,15 +64,14 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
               },
             }}
           >
-            {name}
-          </Typography>
-          <Typography color={medium} fontSize="0.75rem">
-            {subtitle}
+            {user?.firstName + " " + user?.lastName}
           </Typography>
         </Box>
       </FlexBetween>
+            )
+        }
     </FlexBetween>
   );
 };
 
-export default Friend;
+export default UserCard;

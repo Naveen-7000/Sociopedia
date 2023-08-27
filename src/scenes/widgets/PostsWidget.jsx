@@ -15,7 +15,8 @@ const PostsWidget = ({ userId, isProfile = false }) => {
       headers: { Authorization: `Bearer ${token}` },
     });
     const data = await response.json();
-    dispatch(setPosts({ posts: data }));
+    const sortedPosts = data.sort((a, b) => b._id.localeCompare(a._id));
+    dispatch(setPosts({ posts: sortedPosts  }));
   };
 
   const getUserPosts = async () => {

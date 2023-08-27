@@ -12,6 +12,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPost } from "state";
 import { BASE_URL } from "db";
+import UserCard from "components/UserCard";
 
 const PostWidget = ({
   postId,
@@ -96,10 +97,11 @@ const PostWidget = ({
       {isComments && (
         <Box mt="0.5rem">
           {comments.map((comment, i) => (
-            <Box key={`${name}-${i}`}>
+            <Box key={`${comment._id}-${i}`}>
               <Divider />
+              <UserCard userId={comment.userId} />
               <Typography sx={{ color: main, m: "0.5rem 0", pl: "1rem" }}>
-                {comment}
+                {comment.text}
               </Typography>
             </Box>
           ))}
